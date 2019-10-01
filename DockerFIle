@@ -1,0 +1,15 @@
+FROM ubuntu:18.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update -y
+RUN apt-get install php php-mysql php-pear php-dev -y
+RUN pecl channel-update pecl.php.net
+RUN pecl install swoole 
+COPY php.ini /etc/php/7.2/cli/conf.d/20-swoole.ini
+RUN apt-get install supervisor -y
+RUN mkdir -p /var/run/sshd
+RUN mkdir -p /var/log/supervisor
+RUN apt-get install  ntp  ntpdate -y
+RUN echo "Asia/Taipai" > /etc/timezone
+RUN dpkg-reconfigure -f noninteractive tzdata
+EXPOSE 80
